@@ -54,7 +54,9 @@ class HTML5AudioSource
 
 		parent.buffer.__srcHowl.on("end", howl_onEnd, id);
 
-		setCurrentTime(time);
+		// LS: It's unnecessary to seek right after playing.
+		// getCurrentTime() will just return 0 because there's no id yet.
+		//setCurrentTime(time);
 		#end
 	}
 
