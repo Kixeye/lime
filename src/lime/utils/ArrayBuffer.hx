@@ -20,7 +20,7 @@ abstract ArrayBuffer(Bytes) from Bytes to Bytes
 
 	public static inline function isView(arg:Dynamic):Bool
 	{
-		return (arg != null && Std.is(arg, ArrayBufferView));
+		return (arg != null && (arg is ArrayBufferView));
 	}
 
 	public inline function slice(begin:Int, end:Null<Int> = null)
