@@ -248,7 +248,6 @@ class ImageCanvasUtil
 			if (image.transparent && a == 0)
 			{
 				image.buffer.__srcCanvas.width = image.buffer.width;
-				return;
 			}
 		}
 
