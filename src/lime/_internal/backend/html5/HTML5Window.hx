@@ -904,15 +904,21 @@ class HTML5Window
 
 	public function setClipboard(value:String):Void
 	{
+        var failPrompt = function()
+		{
+			Browser.window.console.log("Clipboard failed: " + value);
+			Browser.window.prompt("Attempt to copy to clipboard failed.  Here is the text you were trying to copy:", value);
+		}
+
         if (textArea == null)
         {
             textArea = cast Browser.document.createElement("textarea");
-            textArea.style.height = "0px";
-            textArea.style.left = "-100px";
-            textArea.style.opacity = "0";
+            textArea.style.height = "10px";
+            textArea.style.left = "-200px";
+            textArea.style.opacity = "1";
             textArea.style.position = "fixed";
-            textArea.style.top = "-100px";
-            textArea.style.width = "0px";
+            textArea.style.top = "-200px";
+            textArea.style.width = "10px";
             Browser.document.body.appendChild(textArea);
         }
         textArea.value = value;
@@ -921,7 +927,25 @@ class HTML5Window
 
 		if (Browser.document.queryCommandEnabled("copy"))
 		{
+			Browser.window.console.log("Copy: " + value);
 			Browser.document.execCommand("copy");
+		}
+		else if (Browser.window.navigator.clipboard != null)
+		{
+			Browser.window.navigator.clipboard.writeText(value)
+				.then(
+					function(result) {
+						Browser.window.console.log("ClipboardAPI: " + value);
+					},
+					function(err) {
+						failPrompt();
+					}
+				);
+
+		}
+		else
+		{
+			failPrompt();
 		}
 	}
 
