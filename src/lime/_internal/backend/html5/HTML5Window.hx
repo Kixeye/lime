@@ -930,9 +930,16 @@ class HTML5Window
 			Browser.window.console.log("Copy: " + value);
 			Browser.document.execCommand("copy");
 		}
+#if haxe4
 		else if (Browser.window.navigator.clipboard != null)
 		{
 			Browser.window.navigator.clipboard.writeText(value)
+#else
+		else if (Reflect.getProperty(Browser.window.navigator, "clipboard") != null)
+			{
+				var cb = Reflect.getProperty(Browser.window.navigator, "clipboard");
+				cb.writeText(value)
+#end
 				.then(
 					function(result) {
 						Browser.window.console.log("ClipboardAPI: " + value);
