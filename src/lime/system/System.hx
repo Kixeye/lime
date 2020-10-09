@@ -259,6 +259,8 @@ class System
 		return null;
 	}
 
+	private static var _getTimerStart:Int = Std.int(Date.now().getTime());
+
 	public static function getTimer():Int
 	{
 		#if (kha && !macro)
@@ -266,7 +268,9 @@ class System
 		#elseif flash
 		return flash.Lib.getTimer();
 		#elseif ((js && !nodejs) || electron)
-		return Std.int(Browser.window.performance.now());
+		return Std.int(Date.now().getTime()) - _getTimerStart;
+		//return Std.int(Browser.window.performance.now());
+
 		#elseif (lime_cffi && !macro)
 		return cast NativeCFFI.lime_system_get_timer();
 		#elseif cpp
