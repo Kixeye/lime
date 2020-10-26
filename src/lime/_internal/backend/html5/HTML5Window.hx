@@ -904,10 +904,13 @@ class HTML5Window
 
 	public function setClipboard(value:String):Void
 	{
+		var originalFocusItem = Browser.document.activeElement;
+
         var failPrompt = function()
 		{
 			Browser.window.console.log("Clipboard failed: " + value);
 			Browser.window.prompt("Attempt to copy to clipboard failed.  Here is the text you were trying to copy:", value);
+			if (originalFocusItem != null) originalFocusItem.focus();
 		}
 
         if (textArea == null)
@@ -929,6 +932,7 @@ class HTML5Window
 		{
 			Browser.window.console.log("Copy: " + value);
 			Browser.document.execCommand("copy");
+			if (originalFocusItem != null) originalFocusItem.focus();
 		}
 #if haxe4
 		else if (Browser.window.navigator.clipboard != null)
@@ -943,6 +947,7 @@ class HTML5Window
 				.then(
 					function(result) {
 						Browser.window.console.log("ClipboardAPI: " + value);
+						if (originalFocusItem != null) originalFocusItem.focus();
 					},
 					function(err) {
 						failPrompt();
