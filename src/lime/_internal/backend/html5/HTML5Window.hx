@@ -258,14 +258,21 @@ class HTML5Window
 		context.window = parent;
 		context.attributes = contextAttributes;
 
+		trace("KIX- HTML5Window.createContext() - div:" + div + " canvas:" + canvas + " renderType:" + renderType);
+
 		if (div != null)
 		{
+			trace("KIX- HTML5Window - using div");
 			context.dom = cast div;
 			context.type = DOM;
 			context.version = "";
+
+
 		}
 		else if (canvas != null)
 		{
+			trace("KIX- HTML5Window - using canvas ");
+
 			var webgl:#if !doc_gen HTML5WebGL2RenderContext #else Dynamic #end = null;
 
 			var forceCanvas = #if (canvas || munit) true #else (renderType == CANVAS) #end;
@@ -273,6 +280,10 @@ class HTML5Window
 			var allowWebGL2 = #if webgl1 false #else (!Reflect.hasField(contextAttributes, "version")
 				|| contextAttributes.version != "1") #end;
 			var isWebGL2 = false;
+
+			var hardwareAtt = Reflect.hasField(contextAttributes, "hardware") ? contextAttributes.hardware : null;
+			trace("KIX- HTML5Window  forceCanvas:" + forceCanvas + " forceWebGL:"+forceWebGL + " allowWebGL2:" + allowWebGL2 + " hardwareAtt:" + hardwareAtt);
+
 
 			if (forceWebGL || (!forceCanvas && (!Reflect.hasField(contextAttributes, "hardware") || contextAttributes.hardware)))
 			{
@@ -297,6 +308,8 @@ class HTML5Window
 					glContextType.unshift("webgl2");
 				}
 
+				trace("KIX- HTML5Window - Testing: " + glContextType);
+
 				for (name in glContextType)
 				{
 					webgl = cast canvas.getContext(name, options);
@@ -304,6 +317,8 @@ class HTML5Window
 					if (webgl != null) break;
 				}
 			}
+
+			trace("KIX- HTML5Window - webgl:" + webgl + " isWebGL2:" + isWebGL2);
 
 			if (webgl == null)
 			{
@@ -333,6 +348,8 @@ class HTML5Window
 				context.version = isWebGL2 ? "2" : "1";
 			}
 		}
+
+		trace("KIX- HTML5Window - context: " + context.type + " version:" + context.version);
 
 		parent.context = context;
 	}
