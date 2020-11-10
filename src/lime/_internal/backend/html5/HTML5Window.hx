@@ -297,8 +297,8 @@ class HTML5Window
 						depth: Reflect.hasField(contextAttributes, "depth") ? contextAttributes.depth : true,
 						premultipliedAlpha: true,
 						stencil: Reflect.hasField(contextAttributes, "stencil") ? contextAttributes.stencil : false,
-						preserveDrawingBuffer: false,
-						failIfMajorPerformanceCaveat: true
+						preserveDrawingBuffer: false
+						//failIfMajorPerformanceCaveat: true
 					};
 				
 				trace("KIX- Dumping Options:");
