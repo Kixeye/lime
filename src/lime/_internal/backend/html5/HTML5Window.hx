@@ -300,6 +300,14 @@ class HTML5Window
 						preserveDrawingBuffer: false,
 						failIfMajorPerformanceCaveat: true
 					};
+				
+				trace("KIX- Dumping Options:");
+				for (p in Reflect.fields(options))
+				{
+					trace("KIX-    options." + p +": " + Reflect.field(options, p));
+				}
+
+
 
 				var glContextType = ["webgl", "experimental-webgl"];
 
@@ -352,6 +360,16 @@ class HTML5Window
 		trace("KIX- HTML5Window - context: " + context.type + " version:" + context.version);
 
 		parent.context = context;
+
+
+		trace("KIX- Perform custom test");
+		var types = ["webgl2", "webgl", "experimental-webgl"];
+		for (a in types)
+		{
+			var test:CanvasElement = cast Browser.document.createElement("canvas");			
+			trace("KIX-   " + a + " " + canvas.getContext(a) + " => " + test);
+		}
+
 	}
 
 	public function focus():Void {}
