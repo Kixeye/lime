@@ -33,6 +33,7 @@ class Preloader #if flash extends Sprite #end
 	public var complete(default, null):Bool;
 	public var onComplete = new Event<Void->Void>();
 	public var onProgress = new Event<Int->Int->Void>();
+	public var onError = new Event<Dynamic->Void>();
 
 	@:noCompletion private var bytesLoaded:Int;
 	@:noCompletion private var bytesLoadedCache = new Map<AssetLibrary, Int>();
@@ -165,6 +166,7 @@ class Preloader #if flash extends Sprite #end
 				})
 				.onError(function(e)
 				{
+					onError.dispatch(e);
 					Log.error(e);
 				});
 		}
@@ -287,6 +289,7 @@ class Preloader #if flash extends Sprite #end
 					})
 					.onError(function(e)
 					{
+						onError.dispatch(e);
 						Log.error(e);
 					});
 			}
