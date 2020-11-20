@@ -286,8 +286,8 @@ class HTML5Window
 						depth: Reflect.hasField(contextAttributes, "depth") ? contextAttributes.depth : true,
 						premultipliedAlpha: true,
 						stencil: Reflect.hasField(contextAttributes, "stencil") ? contextAttributes.stencil : false,
-						preserveDrawingBuffer: false
-						//failIfMajorPerformanceCaveat: true // removed to fix issue with chrome blocking webgl in some instances
+						preserveDrawingBuffer: false,
+						failIfMajorPerformanceCaveat: false
 					};
 
 				var glContextType = ["webgl", "experimental-webgl"];
