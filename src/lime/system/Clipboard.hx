@@ -54,7 +54,7 @@ class Clipboard
 	{
 		// Native clipboard calls __update when clipboard changes
 
-		#if (flash || js || html5)
+		#if (flash) // || js || html5)
 		__update();
 		#end
 
