@@ -1,6 +1,7 @@
 package lime.utils;
 
 import haxe.io.Path;
+import haxe.macro.Compiler;
 import lime.app.Event;
 import lime.app.Future;
 import lime.app.Promise;
@@ -42,9 +43,12 @@ class AssetLibrary
 	@:noCompletion private var promise:Promise<AssetLibrary>;
 	@:noCompletion private var sizes = new Map<String, Int>();
 	@:noCompletion private var types = new Map<String, AssetType>();
+	@:noCompletion private var maxAssetLoadAttempts:Int;
+	@:noCompletion private var assetLoadAttempts = new Map<String, Int>();
 
 	public function new()
 	{
+		maxAssetLoadAttempts = #if lime_asset_library_load_retries Std.parseInt(Compiler.getDefine("lime-asset-library-load-retries")) #else 5 #end;
 		bytesLoaded = 0;
 		bytesTotal = 0;
 	}
@@ -901,6 +905,16 @@ class AssetLibrary
 
 	@:noCompletion private function load_onError(id:String, message:Dynamic):Void
 	{
+		var loadAttempts = assetLoadAttempts.exists(id) ? assetLoadAttempts.get(id) : 0;
+		assetLoadAttempts.set(id, ++loadAttempts);
+
+		if (loadAttempts <= maxAssetLoadAttempts)
+		{
+			Log.verbose('Failed to load asset: ${id} [${types.get(id)}]. Attempt (${loadAttempts}/${maxAssetLoadAttempts})');
+			retryAssetLoad(id);
+			return;
+		}
+
 		if (message != null && message != "")
 		{
 			promise.error("Error loading asset \"" + id + "\": " + Std.string(message));
@@ -908,6 +922,28 @@ class AssetLibrary
 		else
 		{
 			promise.error("Error loading asset \"" + id + "\"");
+		}
+	}
+
+	@:noCompletion private function retryAssetLoad(id:String):Void
+	{
+		var future = loadAsset(id, types.get(id));
+		future.onProgress(load_onProgress.bind(id));
+		future.onError(load_onError.bind(id));
+
+		switch (types.get(id))
+		{
+			case BINARY:
+				future.onComplete(loadBytes_onComplete.bind(id));
+			case FONT:
+				future.onComplete(loadFont_onComplete.bind(id));
+			case IMAGE:
+				future.onComplete(loadImage_onComplete.bind(id));
+			case MUSIC, SOUND:
+				future.onComplete(loadAudioBuffer_onComplete.bind(id));
+			case TEXT:
+				future.onComplete(loadText_onComplete.bind(id));
+			default:
 		}
 	}
 

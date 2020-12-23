@@ -276,7 +276,10 @@ class HTML5Application
 		Browser.window.addEventListener("blur", handleWindowEvent, false);
 		Browser.window.addEventListener("resize", handleWindowEvent, false);
 		Browser.window.addEventListener("beforeunload", handleWindowEvent, false);
+
+		#if devicemotionEnabled
 		Browser.window.addEventListener("devicemotion", handleSensorEvent, false);
+		#end
 
 		#if stats
 		stats = untyped __js__("new Stats ()");
@@ -354,7 +357,9 @@ class HTML5Application
 			window.__backend.updateSize();
 		}
 
+		#if gameDevicesEnabled
 		updateGameDevices();
+		#end
 
 		currentUpdate = Date.now().getTime();
 
