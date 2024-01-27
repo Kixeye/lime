@@ -160,6 +160,11 @@ class CFFI
 					{
 						result = __tryLoad(haxelib + slash + "ndll" + slash + __sysName() + "64" + slash + library, library, method, args);
 					}
+
+					if (result == null)
+					{
+						result = __tryLoad(haxelib  + "/ndll/" + __sysName() + "Arm64/" + library, library, method, args);
+					}
 				}
 			}
 
