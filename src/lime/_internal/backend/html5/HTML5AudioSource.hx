@@ -37,9 +37,6 @@ class HTML5AudioSource
 		}
 
 		playing = true;
-
-		var time = getCurrentTime();
-
 		completed = false;
 
 		var cacheVolume = untyped parent.buffer.__srcHowl._volume;
@@ -54,9 +51,10 @@ class HTML5AudioSource
 
 		parent.buffer.__srcHowl.on("end", howl_onEnd, id);
 
-		// LS: It's unnecessary to seek right after playing.
-		// getCurrentTime() will just return 0 because there's no id yet.
-		//setCurrentTime(time);
+		if (parent.offset > 0)
+		{
+			setCurrentTime(0);
+		}
 		#end
 	}
 
