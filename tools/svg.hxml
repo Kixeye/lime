@@ -1,9 +1,16 @@
+# Builds svg.n (SVG -> PNG for app icons). Uses the openfl fork's upstream
+# base (branch haxe-4.3-migration-tools-base, checked out next to the openfl
+# repo) because the Kixeye openfl src/ only compiles for JS. Requires the
+# 'svg' haxelib (1.1.3). openfl must be defined with its version, or svg's
+# '#if openfl < "3.6.0"' checks pick the legacy enum code.
 -main SVGExport
 -neko ../svg.n
 -D lime=7.0.0
 -cp ../src
 -lib hxp
--lib openfl
+-cp ../../openfl-tools-base/src
+--macro openfl._internal.macros.ExtraParams.include()
+-D openfl=9.0.0
 -lib svg
 -D lime-cairo
 -D lime-cffi
