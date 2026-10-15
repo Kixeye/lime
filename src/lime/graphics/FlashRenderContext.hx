@@ -17,6 +17,7 @@ import flash.display.Sprite;
 **/
 @:access(lime.graphics.RenderContext)
 @:forward
+@:transitive
 abstract FlashRenderContext(Sprite) from Sprite to Sprite
 {
 	@:from private static function fromRenderContext(context:RenderContext):FlashRenderContext

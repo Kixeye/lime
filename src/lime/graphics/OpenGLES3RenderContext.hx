@@ -42,6 +42,7 @@ import lime.utils.Int32Array;
 **/
 @:forward
 #if (lime_doc_gen)
+@:transitive
 abstract OpenGLES3RenderContext(NativeOpenGLRenderContext) from NativeOpenGLRenderContext
 {
 #else

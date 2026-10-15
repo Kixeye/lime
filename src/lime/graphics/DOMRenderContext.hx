@@ -17,6 +17,7 @@ import js.html.Element;
 **/
 @:access(lime.graphics.RenderContext)
 @:forward
+@:transitive
 abstract DOMRenderContext(Element) from Element to Element
 {
 	@:from private static function fromRenderContext(context:RenderContext):DOMRenderContext

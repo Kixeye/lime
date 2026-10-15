@@ -494,7 +494,7 @@ class AndroidPlatform extends PlatformTarget
 			// }
 		}
 
-		for (library in context.ANDROID_LIBRARY_PROJECTS)
+		for (library in cast(context.ANDROID_LIBRARY_PROJECTS, Array<Dynamic>))
 		{
 			System.recursiveCopy(library.source, destination + "/deps/" + library.name, context, true);
 		}
