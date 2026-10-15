@@ -1,0 +1,32 @@
+diff --git a/files.xml b/files.xml
+index 474b518..231e8b6 100644
+--- a/files.xml
++++ b/files.xml
+@@ -44,6 +44,14 @@
+ 			<file name="${NATIVE_TOOLKIT_PATH}/png/arm/filter_neon_intrinsics.c" />
+ 			
+ 		</section>
++
++		<!-- Apple Silicon macOS: libpng auto-enables NEON on arm64 -->
++		<section if="mac HXCPP_ARM64">
++			
++			<file name="${NATIVE_TOOLKIT_PATH}/png/arm/arm_init.c" />
++			<file name="${NATIVE_TOOLKIT_PATH}/png/arm/filter_neon_intrinsics.c" />
++			
++		</section>
+ 		
+ 	</files>
+ 	
+diff --git a/pngpriv.h b/pngpriv.h
+index 5110d35..33d17c5 100644
+--- a/pngpriv.h
++++ b/pngpriv.h
+@@ -433,7 +433,7 @@
+ #  include <float.h>
+ 
+ #  if (defined(__MWERKS__) && defined(macintosh)) || defined(applec) || \
+-    defined(THINK_C) || defined(__SC__) || defined(TARGET_OS_MAC)
++    defined(THINK_C) || defined(__SC__)
+      /* We need to check that <math.h> hasn't already been included earlier
+       * as it seems it doesn't agree with <fp.h>, yet we should really use
+       * <fp.h> if possible.
