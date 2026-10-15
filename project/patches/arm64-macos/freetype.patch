@@ -1,0 +1,13 @@
+diff --git a/files.xml b/files.xml
+index 03e9d55..ae1ec8c 100644
+--- a/files.xml
++++ b/files.xml
+@@ -62,6 +62,8 @@
+ 
+ 		<compilerflag value="-I${NATIVE_TOOLKIT_PATH}/freetype/include" />
+ 		<compilerflag value="-DFT2_BUILD_LIBRARY" />
++		<compilerflag value="-DFT_CONFIG_OPTION_SYSTEM_ZLIB" />
++		<compilerflag value="-I${NATIVE_TOOLKIT_PATH}/zlib" /> <!-- Use lime zlib instead of bundled gzip copy (matches upstream lime) -->
+ 
+ 		<compilerflag value="-DNATIVE_TOOLKIT_HAVE_HARFBUZZ" if="NATIVE_TOOLKIT_HAVE_HARFBUZZ" />
+ 		<compilerflag value="-I${NATIVE_TOOLKIT_PATH}/harfbuzz/src" if="NATIVE_TOOLKIT_HAVE_HARFBUZZ" />

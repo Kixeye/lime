@@ -1,0 +1,38 @@
+diff --git a/files.xml b/files.xml
+index c8a851a..8e360d9 100644
+--- a/files.xml
++++ b/files.xml
+@@ -88,11 +88,11 @@
+ 
+             <compilerflag value="-D_POSIX_C_SOURCE=200112L" />
+             <compilerflag value="-D_XOPEN_SOURCE=500" />
+-            <compilerflag value="-mmmx" unless="rpi" />
+-            <compilerflag value="-msse" unless="rpi" />
+-            <compilerflag value="-msse2" unless="rpi" />
+-            <compilerflag value="-msse3" unless="rpi" />
+-            <compilerflag value="-mssse3" unless="rpi" />
++            <compilerflag value="-mmmx" unless="rpi || HXCPP_ARM64" />
++            <compilerflag value="-msse" unless="rpi || HXCPP_ARM64" />
++            <compilerflag value="-msse2" unless="rpi || HXCPP_ARM64" />
++            <compilerflag value="-msse3" unless="rpi || HXCPP_ARM64" />
++            <compilerflag value="-mssse3" unless="rpi || HXCPP_ARM64" />
+             <compilerflag value="-mfpu=neon" if="rpi" />
+             <compilerflag value="-fcommon" />
+ 
+@@ -106,11 +106,11 @@
+ 
+             <file name="${NATIVE_TOOLKIT_PATH}/openal/Alc/backends/coreaudio.c" />
+ 
+-            <compilerflag value="-mmmx" />
+-            <compilerflag value="-msse" />
+-            <compilerflag value="-msse2" />
+-            <compilerflag value="-msse3" />
+-            <compilerflag value="-mssse3" />
++            <compilerflag value="-mmmx" unless="HXCPP_ARM64" />
++            <compilerflag value="-msse" unless="HXCPP_ARM64" />
++            <compilerflag value="-msse2" unless="HXCPP_ARM64" />
++            <compilerflag value="-msse3" unless="HXCPP_ARM64" />
++            <compilerflag value="-mssse3" unless="HXCPP_ARM64" />
+ 
+         </section>
+ 

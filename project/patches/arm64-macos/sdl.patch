@@ -1,0 +1,52 @@
+diff --git a/files.xml b/files.xml
+index e0e6ca5..c1ea1b9 100644
+--- a/files.xml
++++ b/files.xml
+@@ -140,11 +140,11 @@
+             <compilerflag value="-DUSING_GENERATED_CONFIG_H" />
+             <compilerflag value="-DHAVE_LINUX_VERSION_H" />
+             <compilerflag value="-D_REENTRANT" />
+-            <compilerflag value="-mmmx" unless="rpi" />
+-            <compilerflag value="-msse" unless="rpi" />
+-            <compilerflag value="-msse2" unless="rpi" />
+-            <compilerflag value="-msse3" unless="rpi" />
+-            <compilerflag value="-mssse3" unless="rpi" />
++            <compilerflag value="-mmmx" unless="rpi || HXCPP_ARM64" />
++            <compilerflag value="-msse" unless="rpi || HXCPP_ARM64" />
++            <compilerflag value="-msse2" unless="rpi || HXCPP_ARM64" />
++            <compilerflag value="-msse3" unless="rpi || HXCPP_ARM64" />
++            <compilerflag value="-mssse3" unless="rpi || HXCPP_ARM64" />
+ 
+             <compilerflag value="-mfpu=neon" if="rpi" />
+             <compilerflag value="-mfloat-abi=hard" if="rpi" />
+@@ -169,11 +169,11 @@
+             <compilerflag value="-DTARGET_API_MAC_CARBON" />
+             <compilerflag value="-DTARGET_API_MAC_OSX" />
+             <compilerflag value="-D_THREAD_SAFE" />
+-            <compilerflag value="-mmmx" />
+-            <compilerflag value="-msse" />
+-            <compilerflag value="-msse2" />
+-            <compilerflag value="-msse3" />
+-            <compilerflag value="-mssse3" />
++            <compilerflag value="-mmmx" unless="HXCPP_ARM64" />
++            <compilerflag value="-msse" unless="HXCPP_ARM64" />
++            <compilerflag value="-msse2" unless="HXCPP_ARM64" />
++            <compilerflag value="-msse3" unless="HXCPP_ARM64" />
++            <compilerflag value="-mssse3" unless="HXCPP_ARM64" />
+ 
+         </section>
+ 
+diff --git a/include/configs/mac/SDL_config.h b/include/configs/mac/SDL_config.h
+index be8a425..6a570bb 100644
+--- a/include/configs/mac/SDL_config.h
++++ b/include/configs/mac/SDL_config.h
+@@ -237,4 +237,9 @@
+ #define SDL_ALTIVEC_BLITTERS    1
+ #endif
+ 
++/* Apple Silicon: use compiler atomics instead of the removed OSAtomic APIs */
++#if defined(__aarch64__) && !defined(HAVE_GCC_ATOMICS)
++#define HAVE_GCC_ATOMICS 1
++#endif
++
+ #endif /* _SDL_config_h */
