@@ -278,7 +278,11 @@ class MacPlatform extends PlatformTarget
 	{
 		var commands = [];
 
-		if (targetFlags.exists("hl") && System.hostArchitecture == X64)
+		if (System.hostArchitecture == ARM64)
+		{
+			commands.push(["-Dmac", "-DHXCPP_CLANG", "-DHXCPP_ARM64"]);
+		}
+		else if (targetFlags.exists("hl") && System.hostArchitecture == X64)
 		{
 			// TODO: Support single binary
 			commands.push(["-Dmac", "-DHXCPP_CLANG", "-DHXCPP_M64", "-Dhashlink"]);
