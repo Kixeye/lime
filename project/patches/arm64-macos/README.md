@@ -13,14 +13,15 @@ pointers are unchanged.
 | openal | x86 flags | skipped on `HXCPP_ARM64` |
 | zlib | `fdopen` redefined, breaks SDK `_stdio.h` | test `MACOS` only (zlib 1.2.12 fix) |
 
-Build (needs hxcpp >= 4.3 and Xcode):
+Build (needs hxp >= 1.2 for Apple Silicon detection, hxcpp >= 4.3.175 from
+https://github.com/HaxeFoundation/hxcpp/releases (haxelib's 4.3.2 lacks the
+macOS SDK-detection and arm64 library-name fixes), plus Xcode):
 
 ```sh
 project/patches/arm64-macos/apply.sh
-cd project
-haxelib run hxcpp Build.xml -Dmac -DHXCPP_CLANG -DHXCPP_M64 -DHXCPP_ARM64 -DMACOSX_VER=$(xcrun --show-sdk-version)
-# lime 7.6's CFFI loader looks in ndll/Mac64/
-ln -sf ../MacArm64/lime-64.ndll ../ndll/Mac64/lime.ndll
+haxelib run lime rebuild mac
+# -> ndll/MacArm64/lime.ndll (arm64)
 ```
 
-Don't use `lime rebuild mac`, which builds x86_64 only on this lime version.
+On Apple Silicon, `lime rebuild mac` builds arm64 (MacPlatform.rebuild) and
+the lime tools load the ndll from ndll/MacArm64/ (upstream 1ebce5fa).
