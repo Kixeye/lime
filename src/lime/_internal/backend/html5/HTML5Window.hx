@@ -1043,15 +1043,33 @@ class HTML5Window
 
 	public function setClipboard(value:String):Void
 	{
+		// Kixeye: return focus to the element that had it (the game) after
+		// copying, fall back to the Clipboard API, and if both fail show the
+		// text so the player can copy it by hand.
+		var originalFocusItem = Browser.document.activeElement;
+
+		var restoreFocus = function()
+		{
+			if (originalFocusItem != null) originalFocusItem.focus();
+		}
+
+		var failPrompt = function()
+		{
+			Browser.window.prompt("Attempt to copy to clipboard failed.  Here is the text you were trying to copy:", value);
+			restoreFocus();
+		}
+
 		if (textArea == null)
 		{
+			// Kixeye: a visible (but off-screen) textarea works in more browsers
+			// than a zero-size, transparent one.
 			textArea = cast Browser.document.createElement("textarea");
-			textArea.style.height = "0px";
-			textArea.style.left = "-100px";
-			textArea.style.opacity = "0";
+			textArea.style.height = "10px";
+			textArea.style.left = "-200px";
+			textArea.style.opacity = "1";
 			textArea.style.position = "fixed";
-			textArea.style.top = "-100px";
-			textArea.style.width = "0px";
+			textArea.style.top = "-200px";
+			textArea.style.width = "10px";
 			Browser.document.body.appendChild(textArea);
 		}
 		textArea.value = value;
@@ -1061,6 +1079,21 @@ class HTML5Window
 		if (Browser.document.queryCommandEnabled("copy"))
 		{
 			Browser.document.execCommand("copy");
+			restoreFocus();
+		}
+		else if (Browser.window.navigator.clipboard != null)
+		{
+			Browser.window.navigator.clipboard.writeText(value).then(function(_)
+			{
+				restoreFocus();
+			}, function(_)
+			{
+				failPrompt();
+			});
+		}
+		else
+		{
+			failPrompt();
 		}
 		if (textInputEnabled)
 		{
