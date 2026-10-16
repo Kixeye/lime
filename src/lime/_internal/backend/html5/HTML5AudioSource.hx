@@ -74,7 +74,9 @@ class HTML5AudioSource
 		#if force_html5_audio
 		if (time == 0) setCurrentTime(time);
 		#else
-		setCurrentTime(time);
+		// Kixeye: it's unnecessary to seek right after playing.
+		// getCurrentTime() just returns 0 because there's no id yet.
+		// setCurrentTime(time);
 		#end
 		#end
 	}
