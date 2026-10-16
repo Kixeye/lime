@@ -279,10 +279,13 @@ class HTML5Application
 		Browser.window.addEventListener("resize", handleWindowEvent, false);
 		Browser.window.addEventListener("beforeunload", handleWindowEvent, false);
 
+		// Kixeye: device motion is off unless -D devicemotionEnabled is set.
+		#if devicemotionEnabled
 		if (Reflect.hasField(Browser.window, "Accelerometer"))
 		{
 			Browser.window.addEventListener("devicemotion", handleSensorEvent, false);
 		}
+		#end
 
 		#if stats
 		stats = untyped #if haxe4 js.Syntax.code #else __js__ #end ("new Stats ()");
@@ -381,7 +384,10 @@ class HTML5Application
 			window.__backend.updateSize();
 		}
 
+		// Kixeye: gamepad/joystick polling is off unless -D gameDevicesEnabled is set.
+		#if gameDevicesEnabled
 		updateGameDevices();
+		#end
 
 		currentUpdate = Browser.window.performance.now();
 
