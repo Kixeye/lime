@@ -384,6 +384,10 @@ class System
 		return null;
 	}
 
+	#if ((js && !nodejs) || electron)
+	@:noCompletion private static var __getTimerStart:Float = Date.now().getTime();
+	#end
+
 	/**
 		The number of milliseconds since the application was initialized.
 	**/
@@ -392,7 +396,8 @@ class System
 		#if flash
 		return flash.Lib.getTimer();
 		#elseif ((js && !nodejs) || electron)
-		return Std.int(Browser.window.performance.now());
+		// Kixeye: use Date instead of performance.now(), which can drift.
+		return Std.int(Date.now().getTime() - __getTimerStart);
 		#elseif (lime_cffi && !macro)
 		return cast NativeCFFI.lime_system_get_timer();
 		#elseif cpp
